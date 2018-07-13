@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block main %}
+    <article class="post post-1">
+                    <header class="entry-header">
+                        <h1 class="entry-title">{{ article.title }}</h1>
+                        <div class="entry-meta">
+                            <span class="post-category"><a href="#">{{ article.category.name }}</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">{{ article.modified_time }}</time></a></span>
+                            <span class="post-author"><a href="#">追梦人物</a></span>
+                            <span class="comments-link"><a href="#">4 评论</a></span>
+                            <span class="views-count"><a href="#">588 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        <p>{{ article.excerpt }}</p>
+                        <blockquote><p>Django makes it easier to build better Web apps more quickly and with less
+                            code.</p>
+                            <p>{{ article.content }}</p>
+                        </blockquote>
+                    </div>
+                </article>
+                <section class="comment-area" id="comment-area">
+                    <hr>
+                    <h3>发表评论</h3>
+                    <form action="{% url 'comments:article_comment' article.pk %}" method="post" class="comment-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="id_name">名字：</label>
+                                {{ form.user_name }}
+                                {{ form.user_name.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="id_email">邮箱：</label>
+                                {{ form.user_email }}
+                                {{ form.user_email.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="id_url">网址：</label>
+                                 {{ form.user_url }}
+                                 {{ form.user_url.errors }}
+                            </div>
+                            <div class="col-md-12">
+                                <label for="id_comment">评论：</label>
+                                {{ form.content }}
+                                {{ form.content.errors }}
+                                <button type="submit" class="comment-btn">发表</button>
+                            </div>
+                        </div>    <!-- row -->
+                    </form>
+                    <div class="comment-list-panel">
+                        <h3>评论列表，共 <span>{{ comment_list.count }}</span> 条评论</h3>
+                        <ul class="comment-list list-unstyled">
+                            {% for comment in comment_list %}
+                                <li class="comment-item">
+                                 <span class="nickname">{{ comment.user_name }}</span>
+                                 <time class="submit-date" datetime="2012-11-09T23:15:57+00:00">{{ comment.create_time }}</time>
+                                 <div class="text">
+                                     {{ comment.content }}
+                                 </div>
+                               </li>
+                            {% empty %}
+                                暂无评论
+                            {% endfor %}
+
+
+                        </ul>
+                    </div>
+                </section>
+
+{% endblock main %}
+
